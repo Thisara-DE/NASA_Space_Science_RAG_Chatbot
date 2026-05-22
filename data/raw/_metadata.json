@@ -1,0 +1,92 @@
+[
+  {
+    "index": 0,
+    "url": "https://science.nasa.gov/solar-system/",
+    "title": "Solar System Exploration",
+    "char_count": 5159
+  },
+  {
+    "index": 1,
+    "url": "https://science.nasa.gov/solar-system/planets/",
+    "title": "About the Planets",
+    "char_count": 3145
+  },
+  {
+    "index": 2,
+    "url": "https://science.nasa.gov/solar-system/planets/earth/",
+    "title": "Earth - NASA Science",
+    "char_count": 1157
+  },
+  {
+    "index": 3,
+    "url": "https://science.nasa.gov/solar-system/planets/jupiter/",
+    "title": "Jupiter - NASA Science",
+    "char_count": 1237
+  },
+  {
+    "index": 4,
+    "url": "https://science.nasa.gov/solar-system/planets/saturn/",
+    "title": "Saturn - NASA Science",
+    "char_count": 892
+  },
+  {
+    "index": 5,
+    "url": "https://science.nasa.gov/solar-system/planets/uranus/",
+    "title": "Uranus - NASA Science",
+    "char_count": 217
+  },
+  {
+    "index": 6,
+    "url": "https://science.nasa.gov/solar-system/planets/neptune/",
+    "title": "Neptune - NASA Science",
+    "char_count": 1091
+  },
+  {
+    "index": 7,
+    "url": "https://science.nasa.gov/solar-system/moons/",
+    "title": "Moons",
+    "char_count": 2382
+  },
+  {
+    "index": 8,
+    "url": "https://science.nasa.gov/solar-system/asteroids/",
+    "title": "Asteroids",
+    "char_count": 1711
+  },
+  {
+    "index": 9,
+    "url": "https://science.nasa.gov/solar-system/comets/",
+    "title": "Comets",
+    "char_count": 1771
+  },
+  {
+    "index": 10,
+    "url": "https://science.nasa.gov/universe/",
+    "title": "Universe - NASA Science",
+    "char_count": 2944
+  },
+  {
+    "index": 11,
+    "url": "https://science.nasa.gov/astrophysics/",
+    "title": "NASA Astrophysics - NASA Science",
+    "char_count": 10140
+  },
+  {
+    "index": 12,
+    "url": "https://science.nasa.gov/earth/",
+    "title": "Earth - NASA Science",
+    "char_count": 4613
+  },
+  {
+    "index": 13,
+    "url": "https://science.nasa.gov/planetary-science/",
+    "title": "Planetary Science - NASA Science",
+    "char_count": 5014
+  },
+  {
+    "index": 14,
+    "url": "https://science.nasa.gov/heliophysics/",
+    "title": "NASA Heliophysics",
+    "char_count": 6578
+  }
+]
