@@ -1,6 +1,7 @@
 requests
 beautifulsoup4
 pandas
+groq
 langchain
 langchain-community
 langchain-groq

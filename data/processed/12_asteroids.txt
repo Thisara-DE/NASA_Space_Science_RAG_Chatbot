@@ -1,0 +1,21 @@
+URL: https://science.nasa.gov/solar-system/asteroids/
+TITLE: Asteroids
+============================================================
+
+Asteroids, sometimes called minor planets, are rocky, airless remnants left over from the early formation of our solar system about 4.6 billion years ago.
+Most asteroids can be found orbiting the Sun between Mars and Jupiter within the main asteroid belt. Asteroids range in size from
+– the largest at about 329 miles (530 kilometers) in diameter – to bodies that are less than 33 feet (10 meters) across. The total mass of all the asteroids combined is less than that of Earth's Moon.
+What if We Discovered an Asteroid Headed for Earth?
+NASA’s DART Mission Changed Orbit of Asteroid Didymos Around Sun
+New research reveals that when NASA’s DART (Double Asteroid Redirection Test) spacecraft intentionally impacted the asteroid moonlet Dimorphos in September…
+For the most up to date count of asteroids in our solar system, please visit NASA/JPL's Solar System Dynamics website.
+NASA has sent several robotic spacecraft to study asteroids up close to learn about their composition and size. Many other asteroids have been observed with telescopes here on Earth.
+NASA’s Psyche Mission Aces Mars Flyby, Targets Metal-Rich Asteroid
+NASA’s Psyche Mission to Fly by Mars for Gravity Assist
+NASA’s Next-Gen Near-Earth Asteroid Space Telescope Takes Shape
+Asteroid Bennu’s Rugged Surface Baffled NASA, We Finally Know Why
+Planetary Defense Coordination Office (PDCO)
+The PDCO manages NASA's mission to find, track, and better understand asteroids and comets that could pose an impact hazard to Earth.
+Center for Near Earth Object Studies (CNEOS)
+CNEOS computes high-precision orbits for Near-Earth Objects (NEOs) in support of NASA’s Planetary Defense Coordination Office.
+National Space Science Data Center: Asteroids
