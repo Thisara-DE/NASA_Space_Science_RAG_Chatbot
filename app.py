@@ -467,7 +467,7 @@ components.html("""
         return { cx, cy };
     }
 
-    const HISTORY_LENGTH = PLANETS.length * 80;
+    const HISTORY_LENGTH = PLANETS.length * 120;
     const pathHistory = [];
 
     function updateHistory() {
@@ -506,7 +506,7 @@ components.html("""
 
         ctx.beginPath();
         for (let i = 0; i < PLANETS.length; i++) {
-            const histIndex = Math.min(i * 80, pathHistory.length - 1);
+            const histIndex = Math.min(i * 120, pathHistory.length - 1);
             const pos = pathHistory[histIndex];
             if (i === 0) ctx.moveTo(pos.x, pos.y);
             else         ctx.lineTo(pos.x, pos.y);
@@ -516,7 +516,7 @@ components.html("""
         ctx.stroke();
 
         for (let i = 0; i < PLANETS.length; i++) {
-            const histIndex  = Math.min(i * 80, pathHistory.length - 1);
+            const histIndex  = Math.min(i * 120, pathHistory.length - 1);
             const pos        = pathHistory[histIndex];
             const wobble     = Math.sin(t * 3.5 + snakeOffsets[i].phase) * 4;
             const tangentIdx = Math.min(histIndex + 2, pathHistory.length - 1);

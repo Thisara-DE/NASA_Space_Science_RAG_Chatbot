@@ -1,5 +1,6 @@
 import os
 from groq import Groq
+from groq.types.chat import ChatCompletionMessageParam
 from dotenv import load_dotenv
 from langchain_core.prompts import PromptTemplate
 from retriever import get_retriever, retrieve
@@ -37,10 +38,10 @@ class NASAChatbot:
     def __init__(self):
         print("🚀 Initialising NASA Space Science Chatbot...")
         self.doc_col, self.qa_col = get_retriever()
-        self.chat_history: list[dict] = []   # stores {"role": ..., "content": ...}
+        self.chat_history: list[ChatCompletionMessageParam] = []
         print("✅ Chatbot ready!\n")
 
-    def _build_messages(self, context: str, question: str) -> list[dict]:
+    def _build_messages(self, context: str, question: str) -> list[ChatCompletionMessageParam]:
         """
         Build the full message list for Groq:
         - System message with the prompt template filled in
@@ -49,7 +50,7 @@ class NASAChatbot:
         """
         filled_prompt = prompt.format(context=context, question=question)
 
-        messages = [{"role": "system", "content": filled_prompt}]
+        messages: list[ChatCompletionMessageParam] = [{"role": "system", "content": filled_prompt}]
 
         # Add recent chat history (last N turns only to stay within token limits)
         recent_history = self.chat_history[-(MAX_HISTORY_TURNS * 2):]
@@ -85,7 +86,7 @@ class NASAChatbot:
             max_tokens=1024,
         )
 
-        answer = response.choices[0].message.content.strip()
+        answer = (response.choices[0].message.content or "").strip()
 
         # ── Update chat history ────────────────────────────────────────────────
         self.chat_history.append({"role": "user",      "content": question})
