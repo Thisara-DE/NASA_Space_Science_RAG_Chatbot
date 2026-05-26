@@ -16,7 +16,6 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-inject_space_background()
 
 def inject_space_background():
     st.markdown("""
@@ -355,6 +354,34 @@ def inject_space_background():
         100% { transform: scale(1.15) translate(-20px, 10px); opacity: 0.2; }
     }
 
+    @keyframes nebulaPulse2 {
+        0%   { transform: scale(1) translate(0, 0); opacity: 0.1; }
+        100% { transform: scale(1.2) translate(15px, -10px); opacity: 0.18; }
+    }
+    </style>
+
+    <div class="space-scene">
+        <div class="stars"></div>
+        <div class="stars2"></div>
+        <div class="stars3"></div>
+        <div class="planet planet1"></div>
+        <div class="planet planet2"></div>
+        <div class="planet planet3"></div>
+        <div class="planet planet4"></div>
+        <div class="planet planet5"></div>
+        <div class="satellite">
+            <div class="satellite-panel-left"></div>
+            <div class="satellite-body"></div>
+            <div class="satellite-panel-right"></div>
+            <div class="satellite-antenna"></div>
+        </div>
+        <div class="nebula nebula1"></div>
+        <div class="nebula nebula2"></div>
+    </div>
+    """, unsafe_allow_html=True)
+
+
+inject_space_background()
 
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
