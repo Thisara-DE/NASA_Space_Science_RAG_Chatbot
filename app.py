@@ -2,7 +2,7 @@ import os
 import sys
 import streamlit as st
 import pandas as pd
-import streamlit.components.v1 as components
+
 
 # ── Make sure src/ is on the path so we can import chatbot ────────────────────
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
@@ -15,6 +15,347 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+inject_space_background()
+
+def inject_space_background():
+    st.markdown("""
+    <style>
+    /* ================================
+        Streamlit app transparency setup
+       ================================ */
+    .stApp {
+        background: transparent !important;
+    }
+
+    [data-testid="stAppViewContainer"] {
+        background:
+            radial-gradient(circle at 20% 20%, rgba(15, 30, 60, 0.35), transparent 35%),
+            radial-gradient(circle at 80% 30%, rgba(60, 20, 80, 0.25), transparent 30%),
+            radial-gradient(circle at 50% 80%, rgba(0, 40, 80, 0.25), transparent 35%),
+            linear-gradient(180deg, #030712 0%, #07111f 45%, #02050d 100%) !important;
+    }
+
+    [data-testid="stHeader"] {
+        background: transparent !important;
+    }
+
+    [data-testid="stSidebar"] {
+        background: rgba(4, 10, 20, 0.72) !important;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-right: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* Make the main block float nicely over the animation */
+    .main .block-container {
+        position: relative;
+        z-index: 2;
+        padding-top: 2rem;
+        padding-bottom: 4rem;
+    }
+
+    /* Optional: soften chat message backgrounds */
+    [data-testid="stChatMessage"] {
+        background: rgba(10, 18, 30, 0.55);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 16px;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+    }
+
+    /* ================================
+        Fixed animated space background
+       ================================ */
+    .space-scene {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* twinkling stars layer */
+    .stars, .stars2, .stars3 {
+        position: absolute;
+        inset: 0;
+        background-repeat: repeat;
+        opacity: 0.9;
+    }
+
+    .stars {
+        background-image:
+            radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.95), transparent 50%),
+            radial-gradient(1.5px 1.5px at 90px 140px, rgba(255,255,255,0.85), transparent 50%),
+            radial-gradient(1.8px 1.8px at 160px 70px, rgba(255,255,255,0.9), transparent 50%),
+            radial-gradient(1.2px 1.2px at 260px 180px, rgba(255,255,255,0.7), transparent 50%),
+            radial-gradient(2px 2px at 340px 60px, rgba(255,255,255,0.95), transparent 50%);
+        background-size: 400px 220px;
+        animation: driftStars 110s linear infinite;
+    }
+
+    .stars2 {
+        background-image:
+            radial-gradient(1.6px 1.6px at 60px 80px, rgba(173,216,255,0.8), transparent 50%),
+            radial-gradient(1.2px 1.2px at 180px 150px, rgba(255,255,255,0.7), transparent 50%),
+            radial-gradient(2px 2px at 300px 40px, rgba(255,255,255,0.85), transparent 50%),
+            radial-gradient(1.4px 1.4px at 360px 190px, rgba(200,220,255,0.7), transparent 50%);
+        background-size: 420px 240px;
+        animation: driftStarsReverse 150s linear infinite;
+        opacity: 0.55;
+    }
+
+    .stars3 {
+        background-image:
+            radial-gradient(1px 1px at 30px 40px, rgba(255,255,255,0.7), transparent 50%),
+            radial-gradient(1px 1px at 130px 100px, rgba(255,255,255,0.55), transparent 50%),
+            radial-gradient(1px 1px at 230px 50px, rgba(255,255,255,0.65), transparent 50%),
+            radial-gradient(1px 1px at 330px 170px, rgba(255,255,255,0.55), transparent 50%);
+        background-size: 380px 210px;
+        animation: twinkle 6s ease-in-out infinite alternate;
+        opacity: 0.45;
+    }
+
+    /* Planets */
+    .planet {
+        position: absolute;
+        border-radius: 50%;
+        filter: drop-shadow(0 0 12px rgba(255,255,255,0.08));
+        will-change: transform;
+    }
+
+    .planet::after {
+        content: "";
+        position: absolute;
+        inset: 8%;
+        border-radius: 50%;
+        background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), transparent 45%);
+        pointer-events: none;
+    }
+
+    .planet1 {
+        width: 72px;
+        height: 72px;
+        top: 14%;
+        left: -8%;
+        background: radial-gradient(circle at 30% 30%, #9ad7ff 0%, #4e7cff 45%, #22347e 100%);
+        animation: floatPlanet1 34s ease-in-out infinite alternate;
+        opacity: 0.9;
+    }
+
+    .planet2 {
+        width: 120px;
+        height: 120px;
+        top: 58%;
+        left: 78%;
+        background: radial-gradient(circle at 35% 35%, #ffd27a 0%, #d88135 50%, #6b2c11 100%);
+        animation: floatPlanet2 42s ease-in-out infinite alternate;
+        opacity: 0.85;
+    }
+
+    .planet3 {
+        width: 54px;
+        height: 54px;
+        top: 72%;
+        left: 6%;
+        background: radial-gradient(circle at 35% 35%, #d6c1ff 0%, #8f71ff 48%, #35246d 100%);
+        animation: floatPlanet3 28s ease-in-out infinite alternate;
+        opacity: 0.8;
+    }
+
+    .planet4 {
+        width: 88px;
+        height: 88px;
+        top: 22%;
+        left: 72%;
+        background: radial-gradient(circle at 35% 35%, #b6ffd7 0%, #36b37e 48%, #0b4f3b 100%);
+        animation: floatPlanet4 38s ease-in-out infinite alternate;
+        opacity: 0.72;
+    }
+
+    /* Ringed planet */
+    .planet5 {
+        width: 96px;
+        height: 96px;
+        top: 42%;
+        left: 32%;
+        background: radial-gradient(circle at 35% 35%, #ffe9b8 0%, #caa26b 52%, #6a4c28 100%);
+        animation: floatPlanet5 46s ease-in-out infinite alternate;
+        opacity: 0.78;
+    }
+
+    .planet5::before {
+        content: "";
+        position: absolute;
+        width: 140%;
+        height: 30%;
+        top: 36%;
+        left: -20%;
+        border-radius: 50%;
+        border: 3px solid rgba(255, 232, 180, 0.35);
+        transform: rotate(-18deg);
+    }
+
+    /* Satellite */
+    .satellite {
+        position: absolute;
+        top: 18%;
+        left: -16%;
+        width: 62px;
+        height: 20px;
+        animation: satelliteFly 20s linear infinite;
+        opacity: 0.92;
+        will-change: transform, opacity;
+    }
+
+    .satellite-body {
+        position: absolute;
+        left: 20px;
+        top: 5px;
+        width: 22px;
+        height: 10px;
+        border-radius: 4px;
+        background: linear-gradient(180deg, #dce6f5 0%, #8b97aa 100%);
+        box-shadow: 0 0 10px rgba(255,255,255,0.12);
+    }
+
+    .satellite-panel-left,
+    .satellite-panel-right {
+        position: absolute;
+        top: 2px;
+        width: 18px;
+        height: 16px;
+        border-radius: 2px;
+        background: linear-gradient(180deg, #4dc3ff 0%, #183d70 100%);
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+    }
+
+    .satellite-panel-left { left: 0; }
+    .satellite-panel-right { right: 0; }
+
+    .satellite-antenna {
+        position: absolute;
+        left: 28px;
+        top: -2px;
+        width: 2px;
+        height: 8px;
+        background: #cfd8e3;
+    }
+
+    /* Subtle nebula glows */
+    .nebula {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(40px);
+        opacity: 0.16;
+        will-change: transform;
+    }
+
+    .nebula1 {
+        width: 300px;
+        height: 220px;
+        top: 10%;
+        left: 60%;
+        background: rgba(96, 82, 255, 0.35);
+        animation: nebulaPulse1 18s ease-in-out infinite alternate;
+    }
+
+    .nebula2 {
+        width: 260px;
+        height: 180px;
+        top: 60%;
+        left: 12%;
+        background: rgba(0, 173, 239, 0.28);
+        animation: nebulaPulse2 22s ease-in-out infinite alternate;
+    }
+
+    /* Keyframes */
+    @keyframes driftStars {
+        from { transform: translate3d(0, 0, 0); }
+        to   { transform: translate3d(-220px, -120px, 0); }
+    }
+
+    @keyframes driftStarsReverse {
+        from { transform: translate3d(0, 0, 0); }
+        to   { transform: translate3d(180px, 100px, 0); }
+    }
+
+    @keyframes twinkle {
+        0%   { opacity: 0.25; }
+        50%  { opacity: 0.5; }
+        100% { opacity: 0.75; }
+    }
+
+    @keyframes floatPlanet1 {
+        0%   { transform: translate(0vw, 0vh) scale(1); }
+        25%  { transform: translate(18vw, 8vh) scale(1.04); }
+        50%  { transform: translate(36vw, -2vh) scale(0.98); }
+        75%  { transform: translate(58vw, 10vh) scale(1.03); }
+        100% { transform: translate(78vw, 2vh) scale(1); }
+    }
+
+    @keyframes floatPlanet2 {
+        0%   { transform: translate(0vw, 0vh) scale(1); }
+        25%  { transform: translate(-10vw, -10vh) scale(1.02); }
+        50%  { transform: translate(-26vw, 8vh) scale(0.98); }
+        75%  { transform: translate(-42vw, -14vh) scale(1.03); }
+        100% { transform: translate(-58vw, 4vh) scale(1); }
+    }
+
+    @keyframes floatPlanet3 {
+        0%   { transform: translate(0vw, 0vh) scale(1); }
+        33%  { transform: translate(22vw, -8vh) scale(1.04); }
+        66%  { transform: translate(40vw, 6vh) scale(0.96); }
+        100% { transform: translate(58vw, -4vh) scale(1); }
+    }
+
+    @keyframes floatPlanet4 {
+        0%   { transform: translate(0vw, 0vh) scale(1); }
+        25%  { transform: translate(-12vw, 7vh) scale(0.98); }
+        50%  { transform: translate(-28vw, -7vh) scale(1.03); }
+        75%  { transform: translate(-18vw, 12vh) scale(0.99); }
+        100% { transform: translate(-36vw, -2vh) scale(1.02); }
+    }
+
+    @keyframes floatPlanet5 {
+        0%   { transform: translate(0vw, 0vh) scale(1) rotate(0deg); }
+        25%  { transform: translate(12vw, -6vh) scale(1.02) rotate(2deg); }
+        50%  { transform: translate(24vw, 10vh) scale(0.98) rotate(-2deg); }
+        75%  { transform: translate(44vw, 4vh) scale(1.02) rotate(1deg); }
+        100% { transform: translate(58vw, -8vh) scale(1) rotate(-1deg); }
+    }
+
+    @keyframes satelliteFly {
+        0% {
+            transform: translate(-10vw, 0vh) rotate(8deg);
+            opacity: 0;
+        }
+        8% {
+            opacity: 0.92;
+        }
+        30% {
+            transform: translate(30vw, 8vh) rotate(10deg);
+            opacity: 0.95;
+        }
+        65% {
+            transform: translate(75vw, 16vh) rotate(12deg);
+            opacity: 0.9;
+        }
+        92% {
+            opacity: 0.8;
+        }
+        100% {
+            transform: translate(126vw, 24vh) rotate(14deg);
+            opacity: 0;
+        }
+    }
+
+    @keyframes nebulaPulse1 {
+        0%   { transform: scale(1) translate(0, 0); opacity: 0.12; }
+        100% { transform: scale(1.15) translate(-20px, 10px); opacity: 0.2; }
+    }
+
+
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 BASE_DIR = os.path.dirname(__file__)
@@ -409,223 +750,3 @@ if user_input:
             "confidence":  result["confidence"],
         }
     })
-
-# ── Animated solar system background (placed last so it never blocks init) ────
-components.html("""
-<!DOCTYPE html>
-<html>
-<head><style>* { margin:0; padding:0; } body { background:transparent; }</style></head>
-<body>
-<script>
-(function() {
-    const doc = window.parent.document;
-    const existing = doc.getElementById('spaceCanvas');
-    if (existing) existing.remove();
-
-    const canvas = doc.createElement('canvas');
-    canvas.id = 'spaceCanvas';
-    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:0;';
-    doc.body.appendChild(canvas);
-
-    const ctx = canvas.getContext('2d');
-
-    function resize() {
-        canvas.width  = window.parent.innerWidth;
-        canvas.height = window.parent.innerHeight;
-    }
-    resize();
-    window.parent.addEventListener('resize', resize);
-
-    const PLANETS = [
-        { name:'Sun',     color:'#FDB813', radius:13, glow:'#ffe066' },
-        { name:'Mercury', color:'#b5b5b5', radius:4,  glow:'#d0d0d0' },
-        { name:'Venus',   color:'#e8cda0', radius:6,  glow:'#f5e6c8' },
-        { name:'Earth',   color:'#4fa3e0', radius:6,  glow:'#a8d4f5' },
-        { name:'Mars',    color:'#c1440e', radius:5,  glow:'#e8724a' },
-        { name:'Jupiter', color:'#c88b3a', radius:11, glow:'#e8b96a' },
-        { name:'Saturn',  color:'#e4d191', radius:9,  glow:'#f0e4b0' },
-        { name:'Uranus',  color:'#7de8e8', radius:7,  glow:'#b0f0f0' },
-        { name:'Neptune', color:'#3f54ba', radius:7,  glow:'#7080e0' },
-    ];
-
-    let t = Math.random() * Math.PI * 2;
-    const SPEED   = 0.0006;
-
-    const snakeOffsets = PLANETS.map((_, i) => ({
-        phase: (i / PLANETS.length) * Math.PI * 2,
-    }));
-
-    function getPathPoint(time) {
-        const cx = canvas.width  * 0.5
-            + Math.sin(time * 1.1 + 0.5) * canvas.width  * 0.25
-            + Math.sin(time * 2.3 + 1.2) * canvas.width  * 0.08
-            + Math.cos(time * 0.7 + 2.1) * canvas.width  * 0.10;
-        const cy = canvas.height * 0.5
-            + Math.cos(time * 0.9 + 1.0) * canvas.height * 0.25
-            + Math.cos(time * 1.8 + 0.3) * canvas.height * 0.08
-            + Math.sin(time * 1.3 + 1.7) * canvas.height * 0.10;
-        return { cx, cy };
-    }
-
-    const HISTORY_LENGTH = PLANETS.length * 120;
-    const pathHistory = [];
-
-    function updateHistory() {
-        const { cx, cy } = getPathPoint(t);
-        pathHistory.unshift({ x: cx, y: cy });
-        if (pathHistory.length > HISTORY_LENGTH) pathHistory.pop();
-    }
-
-    function drawGlow(x, y, r, color) {
-        const g = ctx.createRadialGradient(x, y, r * 0.3, x, y, r * 2.5);
-        g.addColorStop(0, color + 'cc');
-        g.addColorStop(1, color + '00');
-        ctx.beginPath();
-        ctx.arc(x, y, r * 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = g;
-        ctx.fill();
-    }
-
-    function drawPlanet(x, y, planet) {
-        drawGlow(x, y, planet.radius, planet.glow);
-        ctx.beginPath();
-        ctx.arc(x, y, planet.radius, 0, Math.PI * 2);
-        ctx.fillStyle = planet.color;
-        ctx.fill();
-        if (planet.name === 'Saturn') {
-            ctx.beginPath();
-            ctx.ellipse(x, y, planet.radius * 2, planet.radius * 0.55, 0.4, 0, Math.PI * 2);
-            ctx.strokeStyle = '#c8b560aa';
-            ctx.lineWidth = 2.5;
-            ctx.stroke();
-        }
-    }
-
-    function drawChain() {
-        if (pathHistory.length < 2) return;
-
-        ctx.beginPath();
-        for (let i = 0; i < PLANETS.length; i++) {
-            const histIndex = Math.min(i * 120, pathHistory.length - 1);
-            const pos = pathHistory[histIndex];
-            if (i === 0) ctx.moveTo(pos.x, pos.y);
-            else         ctx.lineTo(pos.x, pos.y);
-        }
-        ctx.strokeStyle = 'rgba(255,255,255,0.10)';
-        ctx.lineWidth   = 1;
-        ctx.stroke();
-
-        for (let i = 0; i < PLANETS.length; i++) {
-            const histIndex  = Math.min(i * 120, pathHistory.length - 1);
-            const pos        = pathHistory[histIndex];
-            const wobble     = Math.sin(t * 3.5 + snakeOffsets[i].phase) * 4;
-            const tangentIdx = Math.min(histIndex + 2, pathHistory.length - 1);
-            const tangent    = pathHistory[tangentIdx];
-            const dx  = tangent.x - pos.x;
-            const dy  = tangent.y - pos.y;
-            const len = Math.sqrt(dx*dx + dy*dy) || 1;
-            const wx  = pos.x + (-dy / len) * wobble;
-            const wy  = pos.y + ( dx / len) * wobble;
-            drawPlanet(wx, wy, PLANETS[i]);
-        }
-    }
-
-    let satellite         = null;
-    let lastSatelliteTime = 0;
-    const SATELLITE_INTERVAL = 30000;
-
-    function launchSatellite() {
-        const edge = Math.floor(Math.random() * 4);
-        let sx, sy, ex, ey;
-        if (edge === 0) {
-            sx = Math.random() * canvas.width;  sy = -20;
-            ex = Math.random() * canvas.width;  ey = canvas.height + 20;
-        } else if (edge === 1) {
-            sx = canvas.width + 20; sy = Math.random() * canvas.height;
-            ex = -20;               ey = Math.random() * canvas.height;
-        } else if (edge === 2) {
-            sx = Math.random() * canvas.width;  sy = canvas.height + 20;
-            ex = Math.random() * canvas.width;  ey = -20;
-        } else {
-            sx = -20; sy = Math.random() * canvas.height;
-            ex = canvas.width + 20; ey = Math.random() * canvas.height;
-        }
-        satellite = { sx, sy, ex, ey, progress:0, speed:0.0018 + Math.random()*0.001, trail:[] };
-    }
-
-    function drawSatellite() {
-        if (!satellite) return;
-        satellite.progress += satellite.speed;
-        const x     = satellite.sx + (satellite.ex - satellite.sx) * satellite.progress;
-        const y     = satellite.sy + (satellite.ey - satellite.sy) * satellite.progress;
-        const angle = Math.atan2(satellite.ey - satellite.sy, satellite.ex - satellite.sx);
-
-        satellite.trail.push({ x, y });
-        if (satellite.trail.length > 28) satellite.trail.shift();
-
-        ctx.beginPath();
-        satellite.trail.forEach((p, i) => {
-            ctx.strokeStyle = `rgba(200,230,255,${(i / satellite.trail.length) * 0.5})`;
-            ctx.lineWidth   = 1.5;
-            if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
-        });
-        ctx.stroke();
-
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(angle);
-        ctx.fillStyle = '#c8d8e8';
-        ctx.fillRect(-7, -3, 14, 6);
-        ctx.fillStyle = '#4a7abf';
-        ctx.fillRect(-14, -2, 6, 4);
-        ctx.fillRect(8,   -2, 6, 4);
-        ctx.beginPath();
-        ctx.moveTo(0, -3);
-        ctx.lineTo(0, -8);
-        ctx.strokeStyle = '#ffffff99';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-        ctx.restore();
-
-        if (satellite.progress >= 1) satellite = null;
-    }
-
-    const STARS = Array.from({ length: 120 }, () => ({
-        x: Math.random(), y: Math.random(),
-        r: Math.random() * 1.2 + 0.3,
-        a: Math.random() * 0.6 + 0.2,
-    }));
-
-    function drawStars() {
-        STARS.forEach(s => {
-            ctx.beginPath();
-            ctx.arc(s.x * canvas.width, s.y * canvas.height, s.r, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(255,255,255,${s.a})`;
-            ctx.fill();
-        });
-    }
-
-    function animate(timestamp) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawStars();
-        t += SPEED;
-        updateHistory();
-        drawChain();
-        if (!satellite && timestamp - lastSatelliteTime >= SATELLITE_INTERVAL) {
-            launchSatellite();
-            lastSatelliteTime = timestamp;
-        }
-        if (!satellite && lastSatelliteTime === 0 && timestamp > 8000) {
-            launchSatellite();
-            lastSatelliteTime = timestamp;
-        }
-        drawSatellite();
-        window.parent.requestAnimationFrame(animate);
-    }
-
-    window.parent.requestAnimationFrame(animate);
-})();
-</script>
-</body>
-</html>
-""", height=1, scrolling=False)
