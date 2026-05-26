@@ -1,6 +1,6 @@
 # 🚀 NASA Space Science RAG Chatbot
 
-A sophisticated **Retrieval-Augmented Generation (RAG)** chatbot that brings NASA's space science expertise to your fingertips. Built with cutting-edge NLP and retrieval technologies, this chatbot scrapes, indexes, and intelligently responds to questions about NASA's latest space science discoveries and research.
+A sophisticated **Retrieval-Augmented Generation (RAG)** chatbot that brings NASA's space science expertise to your fingertips. Built with cutting-edge NLP and retrieval technologies, this chatbot [...]
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
@@ -97,7 +97,7 @@ Before getting started, ensure you have:
 - **Python 3.8** or higher
 - **pip** (Python package manager)
 - **API Keys**:
-  - OpenAI API key (for LLM capabilities) or compatible alternative
+  - Groq API key (for LLM capabilities)
   - Internet connection (for scraping NASA content)
 
 ---
@@ -134,7 +134,7 @@ pip install -r requirements.txt
 Create a `.env` file in the project root:
 
 ```env
-OPENAI_API_KEY=your_openai_api_key_here
+GROQ_API_KEY=your_groq_api_key_here
 CHROMA_DB_PATH=./data/chroma_db
 NASA_ARTICLES_PATH=./data/nasa_articles
 ```
@@ -147,7 +147,7 @@ NASA_ARTICLES_PATH=./data/nasa_articles
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `OPENAI_API_KEY` | Your OpenAI API key | Required |
+| `GROQ_API_KEY` | Your Groq API key | Required |
 | `CHROMA_DB_PATH` | Path to ChromaDB storage | `./data/chroma_db` |
 | `NASA_ARTICLES_PATH` | Directory for stored articles | `./data/nasa_articles` |
 | `MAX_ARTICLES` | Maximum articles to scrape | `100` |
@@ -250,9 +250,9 @@ NASA_Space_Science_RAG_Chatbot/
 
 ## 🔑 API Keys & Credentials
 
-### Setting Up OpenAI API Key
+### Setting Up Groq API Key
 
-1. Visit [OpenAI Platform](https://platform.openai.com/account/api-keys)
+1. Visit [Groq Platform](https://console.groq.com/keys)
 2. Create a new API key
 3. Copy and paste into your `.env` file or environment variables
 4. Never commit API keys to version control!
@@ -274,7 +274,7 @@ NASA_Space_Science_RAG_Chatbot/
 **Q: "ModuleNotFoundError: No module named 'streamlit'"**
 - A: Run `pip install -r requirements.txt` to install dependencies
 
-**Q: "OPENAI_API_KEY not found"**
+**Q: "GROQ_API_KEY not found"**
 - A: Ensure your `.env` file is properly configured and the key is valid
 
 **Q: "ChromaDB connection error"**
@@ -335,7 +335,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 - **NASA** for providing excellent space science content at [science.nasa.gov](https://science.nasa.gov)
 - **ChromaDB** for vector database capabilities
 - **Streamlit** for the web framework
-- **OpenAI** for powerful language models
+- **Groq** for powerful language models
 
 ---
 
