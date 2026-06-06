@@ -83,7 +83,10 @@ def generate_qa_pairs(page: dict) -> list[dict]:
             max_tokens=2048,
         )
 
-        raw = response.choices[0].message.content.strip()
+        content = response.choices[0].message.content
+        if content is None:
+            raise ValueError("Model returned no text content")
+        raw = content.strip()
 
         # Strip markdown code fences if the model added them anyway
         if raw.startswith("```"):
