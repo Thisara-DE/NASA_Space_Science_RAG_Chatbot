@@ -6,6 +6,8 @@ A sophisticated **Retrieval-Augmented Generation (RAG)** chatbot that brings NAS
 [![Python 3.8+](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.0+-FF4B4B.svg)](https://streamlit.io/)
 
+### 🌐 [Live Demo: nasaragchatbot.streamlit.app](https://nasaragchatbot.streamlit.app/)
+
 ---
 
 ## 📋 Table of Contents
