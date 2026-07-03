@@ -10,28 +10,54 @@ load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 # ── Groq client ────────────────────────────────────────────────────────────────
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-MODEL  = "llama-3.3-70b-versatile"
+MODEL  = "openai/gpt-oss-120b"   # replaces llama-3.3-70b-versatile (Groq decommission 2026-08-16)
 
 # ── Prompt template (as specified) ────────────────────────────────────────────
 prompt = PromptTemplate(
     input_variables=["context", "question"],
     template="""
-You are an intelligent document assistant. Your only knowledge comes from the provided document excerpts below.
-Answer the user's question based **only** on the information contained in the following context.
-If the answer is not clearly contained in the context, say:
-"I don't have enough information in the document to answer this question accurately."
+You are a warm, curious NASA space science guide who loves helping people understand the cosmos.
+Everything you know comes from the document excerpts provided below — treat these as your only source of facts.
+
+Ground every claim in the context. If the context doesn't contain the answer, be honest and gently say so, for example:
+"That's a great question, but I don't have enough in my current sources to answer it accurately — I don't want to guess."
 
 Context:
 {context}
 
 Question: {question}
 
-Answer in a clear, concise and helpful way. Be direct — avoid unnecessary introductions like "According to the document" unless it adds clarity.
+Now answer in a natural, conversational, and genuinely engaging way:
+- Write like a knowledgeable person explaining something they find fascinating, not like a search result.
+- Open with a direct answer, then add helpful color, context, or a vivid detail that brings it to life — as long as it's supported by the context.
+- Use plain, welcoming language; feel free to show a little enthusiasm for the science.
+- Keep it accurate above all: never add facts, figures, or names that aren't in the context.
+- Aim for a few well-formed sentences rather than a terse one-liner, but don't pad — every sentence should earn its place.
 """
 )
 
 # ── Max chat history turns to keep in memory ──────────────────────────────────
 MAX_HISTORY_TURNS = 6
+
+# ── Guardrail: the only topics this bot is allowed to answer ───────────────────
+# The bot answers only when (a) the question strongly matches a stored Q&A pair,
+# or (b) the question is about astronomy / astrophysics / space science.
+# Everything else is politely declined.
+TOPIC_GATE_PROMPT = """You are a strict topic classifier for a NASA space science assistant.
+Decide whether the user's latest question is about astronomy, astrophysics, or space science.
+This INCLUDES: stars, planets, moons, comets, galaxies, black holes, cosmology, the universe,
+space missions, spacecraft, telescopes, and NASA science in general.
+This does NOT include: cooking, sports, politics, finance, personal advice, general coding,
+horoscopes/astrology, or any other everyday topic.
+Use the conversation so far to interpret short follow-up questions (e.g. "tell me more", "why?").
+Respond with exactly one word: YES if it is on-topic, or NO if it is not."""
+
+REJECTION_MESSAGE = (
+    "I'd genuinely love to help, but I'm here as a space science guide — my world is astronomy "
+    "and astrophysics: planets, stars, galaxies, black holes, and the missions exploring them. "
+    "That one falls outside what I can speak to, so I'll gently pass on it. But ask me anything "
+    "about the cosmos and I'm all yours!"
+)
 
 
 class NASAChatbot:
@@ -61,20 +87,60 @@ class NASAChatbot:
 
         return messages
 
+    def _is_on_topic(self, question: str) -> bool:
+        """
+        Guardrail classifier: is the question about astronomy / astrophysics /
+        space science? Uses recent chat history so short follow-ups are understood.
+        Fails open (returns True) if the classifier is unclear — the grounded
+        answer prompt will still decline gracefully when no relevant context exists.
+        """
+        messages: list[ChatCompletionMessageParam] = [{"role": "system", "content": TOPIC_GATE_PROMPT}]
+        messages.extend(self.chat_history[-(MAX_HISTORY_TURNS * 2):])
+        messages.append({"role": "user", "content": question})
+
+        result = client.chat.completions.create(
+            model=MODEL,
+            messages=messages,
+            temperature=0,
+            max_tokens=10,
+        )
+        verdict = (result.choices[0].message.content or "").strip().upper()
+
+        if "NO" in verdict:
+            return False
+        if "YES" in verdict:
+            return True
+        return True   # unclear → lenient; grounded prompt is the safety net
+
     def ask(self, question: str) -> dict:
         """
         Main method — takes a question, retrieves context, generates answer.
 
         Returns a dict with:
             - answer       : str  — the LLM's response
-            - source       : str  — "qa" or "document"
+            - source       : str  — "qa", "document", or "rejected"
             - matched_qa   : dict or None
             - doc_sources  : list of source URLs
             - confidence   : float
         """
         # ── Retrieve relevant context ──────────────────────────────────────────
         retrieval = retrieve(question, self.doc_col, self.qa_col)
-        context   = retrieval["context"]
+
+        # ── Guardrail ──────────────────────────────────────────────────────────
+        # Answer only if there's a strong Q&A match OR the question is on-topic
+        # (astronomy / astrophysics / space science). Otherwise, politely decline.
+        if retrieval["source"] != "qa" and not self._is_on_topic(question):
+            self.chat_history.append({"role": "user",      "content": question})
+            self.chat_history.append({"role": "assistant", "content": REJECTION_MESSAGE})
+            return {
+                "answer":      REJECTION_MESSAGE,
+                "source":      "rejected",
+                "matched_qa":  None,
+                "doc_sources": [],
+                "confidence":  retrieval["confidence"],
+            }
+
+        context = retrieval["context"]
 
         # ── Build messages and call Groq ───────────────────────────────────────
         messages = self._build_messages(context, question)
@@ -82,7 +148,7 @@ class NASAChatbot:
         response = client.chat.completions.create(
             model=MODEL,
             messages=messages,
-            temperature=0.2,    # low temperature = more factual answers
+            temperature=0.5,    # a touch warmer/more natural, still grounded in context
             max_tokens=1024,
         )
 

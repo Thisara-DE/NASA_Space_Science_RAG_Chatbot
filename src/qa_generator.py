@@ -16,7 +16,7 @@ os.makedirs(PROCESSED_DIR, exist_ok=True)
 
 # ── Groq client ────────────────────────────────────────────────────────────────
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-MODEL  = "llama-3.3-70b-versatile"   # free, fast, good quality
+MODEL  = "openai/gpt-oss-120b"   # replaces llama-3.3-70b-versatile (Groq decommission 2026-08-16)
 
 # ── How many Q&A pairs to request per page ─────────────────────────────────────
 QA_PER_PAGE = 8

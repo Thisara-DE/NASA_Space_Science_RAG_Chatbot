@@ -494,7 +494,7 @@ with st.sidebar:
     <div style="background-color:transparent; border-left:4px solid #4a9eff; padding:8px 12px; border-radius:4px; margin-bottom:8px; color: inherit;">📄 Pages scraped: <strong>{page_count}</strong></div>
     <div style="background-color:transparent; border-left:4px solid #4a9eff; padding:8px 12px; border-radius:4px; margin-bottom:8px; color: inherit;">💬 Q&A pairs generated: <strong>{qa_count}</strong></div>
     <div style="background-color:transparent; border-left:4px solid #4a9eff; padding:8px 12px; border-radius:4px; margin-bottom:8px; color: inherit;">🌐 Source: <strong>science.nasa.gov</strong></div>
-    <div style="background-color:transparent; border-left:4px solid #4a9eff; padding:8px 12px; border-radius:4px; margin-bottom:8px; color: inherit;">🤖 LLM: <strong>Llama 3.3 70B (Groq)</strong></div>
+    <div style="background-color:transparent; border-left:4px solid #4a9eff; padding:8px 12px; border-radius:4px; margin-bottom:8px; color: inherit;">🤖 LLM: <strong>GPT-OSS 120B (Groq)</strong></div>
     <div style="background-color:transparent; border-left:4px solid #4a9eff; padding:8px 12px; border-radius:4px; margin-bottom:8px; color: inherit;">🧠 Embeddings: <strong>all-MiniLM-L6-v2</strong></div>
     <div style="background-color:transparent; border-left:4px solid #4a9eff; padding:8px 12px; border-radius:4px; margin-bottom:8px; color: inherit;">🗄️ Vector DB: <strong>ChromaDB</strong></div>
     """, unsafe_allow_html=True)
@@ -650,7 +650,7 @@ with st.sidebar:
 # MAIN CHAT AREA
 # ══════════════════════════════════════════════════════════════════════════════
 st.markdown('<div class="main-header">🚀 NASA Space Science Chatbot</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-header">Powered by RAG · science.nasa.gov · Groq LLaMA 3.3 70B</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-header">Powered by RAG · science.nasa.gov · Groq GPT-OSS 120B</div>', unsafe_allow_html=True)
 
 st.markdown("""
 <div style="
